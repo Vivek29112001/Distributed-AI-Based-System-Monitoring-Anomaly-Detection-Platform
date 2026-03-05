@@ -1,6 +1,7 @@
-psutil
 fastapi
 uvicorn
+sqlalchemy
+psycopg2-binary
+pydantic
 requests
-pandas
-matplotlib
+psutil

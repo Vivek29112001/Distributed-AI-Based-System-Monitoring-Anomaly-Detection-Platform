@@ -1,40 +1,41 @@
 import psutil
-import requests
 import socket
+import requests
 import time
 
-URL = "http://127.0.0.1:8000/metrics"
+
+url = "http://127.0.0.1:8000/metrics"
 
 
-while True:
-
-    cpu = psutil.cpu_percent()
-    ram = psutil.virtual_memory().percent
-    network = psutil.net_io_counters().bytes_sent
-    process_count = len(psutil.pids())
+def get_ip():
 
     hostname = socket.gethostname()
     ip = socket.gethostbyname(hostname)
 
-    timestamp = time.time()
+    return ip
 
-    data = {
-        "cpu": cpu,
-        "ram": ram,
-        "network": network,
-        "process_count": process_count,
-        "ip": ip,
-        "timestamp": timestamp
+
+while True:
+
+    metrics = {
+
+        "cpu": psutil.cpu_percent(),
+        "ram": psutil.virtual_memory().percent,
+        "network": psutil.net_io_counters().bytes_sent,
+        "process_count": len(psutil.pids()),
+        "ip": get_ip(),
+        "hostname": socket.gethostname(),
+        "timestamp": time.time()
     }
 
     try:
-        response = requests.post(URL, json=data)
 
-        print("Sent:", data)
-        print("Status:", response.status_code)
-        print("Response:", response.text)
+        response = requests.post(url, json=metrics)
+
+        print("Sent:", metrics)
 
     except Exception as e:
+
         print("Error:", e)
 
     time.sleep(5)

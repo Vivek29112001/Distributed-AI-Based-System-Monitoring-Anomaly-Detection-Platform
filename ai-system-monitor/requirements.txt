@@ -1,0 +1,6 @@
+psutil
+fastapi
+uvicorn
+requests
+pandas
+matplotlib
